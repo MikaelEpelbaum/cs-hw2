@@ -9,12 +9,26 @@ def board_reader(length):
     return board
 
 
+def self_sort(line, index):
+    if index >= 0:
+        if line[index + 1] < line[index]:
+            temp = line[index + 1]
+            line[index + 1] = line[index]
+            line[index] = temp
+    for i in range(len(line)):
+        if i < len(line) -1:
+            if not line[i + 1] > line[i]:
+                self_sort(line, i)
+        else:
+            return line
+
+
 def check_rows(length, board):
     for row in range(0, length):
         line = []
         for col in range(0, length):
             line.append(board[row][col])
-        line.sort()
+        line = self_sort(line, 0)
         for i in range(0, length):
             if line[i] != i+1:
                 return False
