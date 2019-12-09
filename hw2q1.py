@@ -1,5 +1,6 @@
 from math import sqrt
 
+
 def board_reader(length):
     print("Please enter a solution:")
     board = []
@@ -16,7 +17,9 @@ def self_sort(line, index):
             line[index + 1] = line[index]
             line[index] = temp
     for i in range(len(line)):
-        if i < len(line) -1:
+        if i < len(line) - 1:
+            if line[i + 1] == line[i]:
+                return False
             if not line[i + 1] > line[i]:
                 self_sort(line, i)
         else:
@@ -29,6 +32,8 @@ def check_rows(length, board):
         for col in range(0, length):
             line.append(board[row][col])
         line = self_sort(line, 0)
+        if not line:
+            return line
         for i in range(0, length):
             if line[i] != i+1:
                 return False
@@ -70,8 +75,13 @@ def check_board_validity(length, board):
 
 print("Please enter the side of the board:")
 length = int(input())
+length_validity = int(sqrt(length)) == sqrt(length)
 board = board_reader(length)
-if check_board_validity(length, board):
-    print('Valid Solution!')
+if length_validity:
+    board_validity = check_board_validity(length, board)
+    if board_validity:
+        print('Valid Solution!')
+    else:
+        print('Invalid Solution')
 else:
     print('Invalid Solution')

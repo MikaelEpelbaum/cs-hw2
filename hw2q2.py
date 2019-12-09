@@ -1,16 +1,19 @@
 def check_date_validity(date: str):
     d = [int(x) for x in date.split('/')]
-    if d[0] < 1 or d[0] > 31 or d[1] < 1 or d[1] > 12 or d[2] < 1 or d[2] > 9999:
+    if not (d[0] >= 1 or d[0] <= 31 or d[1] >= 1 or d[1] <= 12 or d[2] >= 1 or d[2] <= 9999):
         return False
-    if d[1] not in [1, 3, 5, 7, 8, 10, 12] and d[1] > 30:
+    if d[1] not in [1, 3, 5, 7, 8, 10, 12] and d[0] > 30:
         return False
-    if not (d[1] == 2 and 30 > d[0] > 28 and d[2] % 4 == 0 and d[2] % 100 != 0 and d[2] % 400 == 0):
-        return False
+    if d[1] == 2:
+        if not (30 > d[0] > 28 and d[2] % 4 == 0 and d[2] % 100 != 0 and d[2] % 400 == 0):
+            return False
     else:
         return True
 
 
 def date_finder(date: str, distance: int):
+    if not check_date_validity(date):
+        return False
     d = [int(x) for x in date.split('/')]
     for i in range(0, abs(distance)):
         if distance < 0:
@@ -54,4 +57,8 @@ print('Enter a date:')
 date = str(input())
 print('Enter number of days:')
 distance = int(input())
-date_finder(date, distance)
+date_validity = check_date_validity(date)
+if not date_validity:
+    print("The given date is invalid.")
+else:
+    date_finder(date, distance)
